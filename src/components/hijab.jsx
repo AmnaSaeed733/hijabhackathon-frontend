@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-
 // Use environment variable for API base URL
-const API_URL = import.meta.env.VITE_API_URL;
+import API from "../api"; // adjust path if needed
 function Hijab() {
   // List of hijab cards
   const hijabCards = [
@@ -43,10 +41,10 @@ function Hijab() {
     newError[idx] = "";
     setLoading(newLoading);
     setSuccess(newSuccess);
-    
+
     setError(newError);
     try {
-      await axios.post(`${API_URL}/api/reviews`, {
+      await API.post("/api/reviews", {
         review: reviews[idx],
       });
       newSuccess[idx] = "Review submitted!";
@@ -196,7 +194,10 @@ function Hijab() {
         </h2>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {hijabCards.map((card, idx) => (
-            <div key={idx} className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col">
+            <div
+              key={idx}
+              className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col"
+            >
               <div className="relative h-48 w-full">
                 <img
                   src={card.img}
@@ -205,8 +206,12 @@ function Hijab() {
                 />
               </div>
               <div className="p-5 flex-1 flex flex-col">
-                <h3 className="text-lg font-bold text-purple-700 mb-1">{card.name}</h3>
-                <span className="text-pink-500 font-semibold mb-2">{card.price}</span>
+                <h3 className="text-lg font-bold text-purple-700 mb-1">
+                  {card.name}
+                </h3>
+                <span className="text-pink-500 font-semibold mb-2">
+                  {card.price}
+                </span>
                 <textarea
                   className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none mb-2"
                   rows="2"
@@ -222,7 +227,9 @@ function Hijab() {
                   {loading[idx] ? "Submitting..." : "Submit Review"}
                 </button>
                 {success[idx] && (
-                  <div className="text-green-600 text-sm mt-2">{success[idx]}</div>
+                  <div className="text-green-600 text-sm mt-2">
+                    {success[idx]}
+                  </div>
                 )}
                 {error[idx] && (
                   <div className="text-red-500 text-sm mt-2">{error[idx]}</div>
