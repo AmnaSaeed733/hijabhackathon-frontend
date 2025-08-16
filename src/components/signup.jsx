@@ -1,35 +1,42 @@
-
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// Use environment variable for API base URL
-const API_URL = import.meta.env.VITE_API_URL;
+import API from "../api"; // use your axios instance with withCredentials
 
 export default function Signup() {
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        password: ""
-    });
-  const navigate = useNavigate();
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post(`${API_URL}/api/auth/signup`, form);
-            alert("Signup successful!");
-            navigate("/login");
-        } catch (error) {
-            alert("Signup failed!", error.message);
-        }
-    };
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // reset error before submitting
+    try {
+      await API.post("/api/auth/signup", form, {
+        withCredentials: true, // send cookies if backend uses them
+      });
+      alert("Signup successful!");
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Signup failed!");
+      }
+    }
+  };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 font-poppins">
