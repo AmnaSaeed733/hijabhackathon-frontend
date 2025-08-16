@@ -4,6 +4,9 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+
+// Use environment variable for API base URL
+const API_URL = import.meta.env.VITE_API_URL;
 function Hijab() {
   // List of hijab cards
   const hijabCards = [
@@ -42,7 +45,7 @@ function Hijab() {
     setSuccess(newSuccess);
     setError(newError);
     try {
-      await axios.post("hijabhackathon-backend-production.up.railway.app/api/reviews", {
+      await axios.post(`${API_URL}/api/reviews`, {
         review: reviews[idx],
       });
       newSuccess[idx] = "Review submitted!";

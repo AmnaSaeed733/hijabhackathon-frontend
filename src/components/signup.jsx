@@ -1,6 +1,10 @@
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+// Use environment variable for API base URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Signup() {
     const [form, setForm] = useState({
@@ -19,14 +23,12 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("hijabhackathon-backend-production.up.railway.app/api/auth/signup", form);
-
+            await axios.post(`${API_URL}/api/auth/signup`, form);
             alert("Signup successful!");
-                 navigate("/login");
-        }  catch (error) {
-    alert( "Signup failed!",error.message);
-}
-
+            navigate("/login");
+        } catch (error) {
+            alert("Signup failed!", error.message);
+        }
     };
 
     return (

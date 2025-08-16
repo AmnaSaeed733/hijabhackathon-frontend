@@ -1,7 +1,11 @@
+
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+// Use environment variable for API base URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Login() {
 
@@ -16,7 +20,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("hijabhackathon-backend-production.up.railway.app/api/auth/login", form);
+            const res = await axios.post(`${API_URL}/api/auth/login`, form);
             if (res.data && res.data.user) {
                 alert("Login successful!");
                 localStorage.setItem("userId", res.data.user.id);
