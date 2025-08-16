@@ -43,6 +43,7 @@ function Hijab() {
     newError[idx] = "";
     setLoading(newLoading);
     setSuccess(newSuccess);
+    
     setError(newError);
     try {
       await axios.post(`${API_URL}/api/reviews`, {
